@@ -1,55 +1,60 @@
-const rpsNodeList = document.querySelectorAll('.rps-list > button');
-rpsNodeList.forEach((btn) => {
-			btn.addEventListener('click', () => {
-			  demo(btn.textContent);
+const rpsNodeList = document.querySelectorAll('.rps-list > div');
+rpsNodeList.forEach(item => {
+			item.addEventListener('click', () => {
+			  demo(item);
 			} )
 	      } );
 
-const msg = document.querySelector('#result');
+const msg = document.querySelector('#round');
+msg.textContent = 'Click on something, I don\'t have all the time in the world ···';
 
 let gameCount = 0;
-
 let computerCount = 0;
 let userCount = 0;
+
+const computerCountShow = document.querySelector('#computer-count');
+const userCountShow = document.querySelector('#user-count');
 
 // ---------------------------------------------------------
 // This function 'runs' all rhe code; returns nothing
 function demo(input) {
+  msg.style.background = 'linear-gradient(90deg, #0000, #E6E6E6, #0000)';
+  msg.textContent = '';
   if (gameCount < 0 || gameCount > 5) {
-    msg.textContent = 'Hey!, we have a probleme here; please, say it to the stupid who code this ···';
+    msg.style.background = 'linear-gradient(90deg, #0000, #FF9E9E, #0000)';
+    msg.textContent = 'Hey!, we have problems here; please let the guy who code this about it ···';
+    gameCount = 0;
+    msg.textContent += '\nOkay, problem solved!';
     return;
   }
-  if (gameCount === 0) {
-    msg.textContent = 'Please, select One: ';
-  }
 
-  let [message, winner] = getWinner(input);
-  msg.textContent = message;
+  let winner = getWinner(input);
 
-  if (winner) {
-    (winner === 'Computer') ? computerCount++ :
-    (winner === 'User') ? userCount++ :
-    msg.textContent += '${an error with the winner}';
-  }
-  else {
-    msg.textContent += `\nNo Winners(-_-)`
-  }
+  if (winner === 'Computer') computerCount++;
+  else if (winner === 'User') userCount++;
+
   gameCount++;
 
+  computerCountShow.textContent = computerCount;
+  userCountShow.textContent = userCount;
+
   if (gameCount === 5) {
-    msg.textContent = `
-Computer: ${computerCount}
-You: ${userCount}
-    `;
     if (computerCount === userCount) {
-      msg.textContent += `\nTied!`;
+      msg.style.background = 'linear-gradient(90deg, #0000, #E1E1FF, #E1E1FF, #0000)';
+      msg.textContent = '••• Tied! - You couldn\'t do any better, could you? ···';
     }
-    else if (computerCount > userCount) {
-      msg.textContent += `YOU LOSE`;
+    else if (computerCount < userCount) {
+      msg.style.background = 'linear-gradient(90deg, #0000, #E1FFE1, #E1FFE1, #0000)';
+      msg.textContent = '••• YOU WIN - I\'m surprised; you cheated, right? ···';
     }
     else {
-      msg.textContent += `YOU WIN`;
+      msg.style.background = 'linear-gradient(90deg, #0000, #FFE1E1, #FFE1E1, #0000)';
+      msg.textContent = '••• YOU LOSE - So predictable ···';
     }
+
+    computerCountShow.textContent = computerCount;
+    userCountShow.textContent = userCount;
+
 
     gameCount = 0;
     computerCount = 0;
@@ -66,7 +71,6 @@ function getComputerChoiceNumber() {
 // ---------------------------------------------------------
 // This function plays a round of a game; return the 'index' of the winner
 function play(computerChoiceNum, userChoiceNum) {
-  console.log('--------------------- function - play');
   if (computerChoiceNum < 0 || userChoiceNum < 0 ||
       computerChoiceNum > 2 || userChoiceNum > 2) {
     return `Really?, some here looks bad:
@@ -74,7 +78,7 @@ function play(computerChoiceNum, userChoiceNum) {
     you:		${userChoiceNum}`;
   }
   if (computerChoiceNum === userChoiceNum) {
-    return 'Tied! -> Give it your best!';
+    return 'Nobody';
   }
 
   if (computerChoiceNum === 2 && userChoiceNum === 0 ||
@@ -87,39 +91,51 @@ function play(computerChoiceNum, userChoiceNum) {
       	    computerChoiceNum :
 	    userChoiceNum;
   }
+  return 'Mmm, What the Hell? - Other Error here; Bring me the Developer!';
 }
 
 // ---------------------------------------------------------
-// This function works with the data; returns the messages:
-function getWinner(userChoice) {
+// This function works with the data; returns the winner:
+function getWinner(userClick) {
   let rpsArray = ['Rock', 'Paper', 'Scissors'];
-  let wins;
-  let winner;
-  let loser;
 
-  let userChoiceNumber = rpsArray.indexOf(userChoice);
   let computerChoiceNumber = getComputerChoiceNumber();
-  let computerChoice = rpsArray[computerChoiceNumber];
+  let userChoiceNumber = rpsArray.indexOf(userClick.id);
 
+  // -------------------------------------------------------
   let playValue = play(computerChoiceNumber, userChoiceNumber);
+ 
+  let computerChoice = rpsArray[computerChoiceNumber];
+  let userChoice = rpsArray[userChoiceNumber];
+  let userSvg = document.querySelector(`.svg-${userChoice}`).cloneNode(true);
+  let computerSvg = document.querySelector(`.svg-${computerChoice}`).cloneNode(true);
   
-  if (typeof playValue=== 'string') {
-    console.log(playValue +'\n');
-    return [playValue, ''];
+  if (playValue === 'Nobody') {
+    msg.style.background = 'linear-gradient(90deg, #0000, #E1E1FF, #0000)';
+    msg.append(computerSvg, '-', userSvg);
+    console.log(msg.textContent);
+    return;
   }
 
+  let wins = '';
+
   if (playValue === computerChoiceNumber) {
-    winner = computerChoice;
-    loser = userChoice;
+    msg.style.background = 'linear-gradient(90deg, #0000, #FFE1E1, #0000)';
+    msg.append(computerSvg, '>', userSvg);
     wins = 'Computer';
   }
   else if (playValue === userChoiceNumber) {
-    winner = userChoice;
-    loser = computerChoice;
+    msg.style.background = 'linear-gradient(90deg, #0000, #E1FFE1, #0000)';
+    msg.append(computerSvg, '<', userSvg);
     wins = 'User';
   }
-  let message = `${winner} beats ${loser}`
-  console.log(message +'\n'+ wins);
-  return [message, wins];
+  else {
+    msg.style.background = 'linear-gradient(90deg, #0000, #FF9E9E, #0000)';
+    msg.append('Trouble is comming! ->');
+    return 'This didn\'t return a valid value';
+  }
+  // -------------------------------------------------------
+
+  return wins;
 }
 

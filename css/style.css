@@ -1,0 +1,167 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Roboto', Verdana, sans-serif;
+  display: flex;
+  gap: 10px;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  background: linear-gradient(90deg, #030026, #002603, #260300);
+  background-size: 500% 100%;
+  animation: gradient 2.5s linear infinite alternate;
+}
+
+
+#title, #result, .rps-list {
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+  /*flex: auto;*/
+  margin: 0;
+}
+
+#title {
+  align-content: center;
+  padding: 5px 15px;
+  color: #EFF;
+  font-size: 4rem;
+  gap:35px;
+}
+
+
+#result {
+  color: #000;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#counter, #round {
+  display: flex;
+  flex-flow: row wrap;
+}
+#round {
+  min-height: 150px;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #E6E6E6;
+  font-family: 'JetBrainsMono NF', 'agave Nerd Font Mono', monospace;
+  font-size: 2rem;
+}
+
+#round > .svg-Rock, #round > .svg-Paper, #round > .svg-Scissors {
+  background-color: #FFFA;
+  height: 4.5rem;
+  width: 4.5rem;
+  padding: 0.75rem;
+  border-radius: 50%;
+  fill: currentcolor;
+}
+
+#round > .svg-Rock {
+  color: #1313EB;
+}
+#round > .svg-Paper {
+  color: #10CC10;
+}
+#round > .svg-Scissors {
+  color: #EB2F2F;
+}
+
+#counter{
+  align-content: center;
+  justify-content: space-evenly;
+  height: 150px;
+}
+#counter > pre {
+  background-color: #E0FFE0;
+  height:75px;
+  width: 75px;
+  border-radius: 50%;
+  filter: blur(0.9px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.5rem;
+}
+#counter > pre > em {
+  
+}
+
+
+.rps-list {
+  align-content: center;
+  gap: 1rem;
+}
+.rps-list > div {
+  border-radius: 50%;
+  width: 5rem;
+  height: auto;
+  color: white;
+}
+
+.rps-list > div > svg {
+  padding: 1rem;
+  border: solid 2px white;
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  fill: currentcolor;
+}
+.rps-list > div > svg:hover {
+5 filter: blur(1px);
+  background-color: #FDFDFD;
+  padding: 0.75rem;
+}
+
+div .svg-Rock:hover {
+  color: #1313EB;
+}
+div .svg-Paper:hover {
+  color: #10CC10;
+}
+div .svg-Scissors:hover {
+  color: #EB2F2F;
+}
+
+.rps-list > div > svg:active {
+  padding: 1.25rem;
+  filter: blur(3px);
+}
+div > .svg-Rock:active {
+  border: dotted 10px blue;
+}
+div > .svg-Paper:active {
+  border: dotted 10px green;
+}
+div > .svg-Scissors:active {
+  border: dotted 10px red;
+}
+
+
+@keyframes gradient {
+  /*
+   * This is another way to do the same as the following.
+   * I don't know which one is the most appropriate to use,
+   * so I'll leave it here.
+   */
+  /*
+  from {background-color: #030026;}
+  50% {background-color: #002603;}
+  to {background-color: #260300;}
+  */
+  from {background-position: 0%}
+  50% {background-position: 50%}
+  to {background-position: 100%}
+  
+}
+
+
